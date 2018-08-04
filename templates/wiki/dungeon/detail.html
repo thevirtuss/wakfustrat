@@ -1,0 +1,75 @@
+{% extends '_base.html' %}
+
+{% load i18n %}
+
+
+{% block title %}{{ dungeon.name }} - {% trans 'Donjons' %}{% endblock %}
+
+
+{% block head %}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css" integrity="sha256-HAaDW5o2+LelybUhfuk0Zh2Vdk8Y2W2UeKmbaXhalfA=" crossorigin="anonymous" />
+{% endblock %}
+
+
+{% block content %}
+  <h1 class="text-center wiki-name">{{ dungeon.name }} - Niveau {{ dungeon.level }}</h1>
+  <hr>
+  <div class="row">
+    <div class="col-lg-9 markdown">
+      {{ dungeon.content.html|safe }}
+    </div>
+    <div class="col-lg-3 py-4">
+      <div class="card border-info mb-3">
+        <div class="card-body">
+          <h3 class="text-center">{% trans 'Informations' %}</h3>
+          <hr>
+          <dl>
+            <dt>{% trans 'Nom' %}</dt>
+            <dd>{{ dungeon.name }}</dd>
+            <dt>{% trans 'Niveau' %}</dt>
+            <dd>{{ dungeon.level }}</dd>
+            <dt>{% trans 'Boss' %}</dt>
+            <dd>{{ dungeon.boss }}</dd>
+            <dt>{% trans 'Zone' %}</dt>
+            <dd>{{ dungeon.zone }} - {{ dungeon.subzone }}</dd>
+            <dt>{% trans 'Difficulté' %}</dt>
+            <dd>{{ dungeon.get_difficulty_icons|safe }}</dd>
+            <dt>{% trans 'Dernière mise à jour' %}</dt>
+            <dd>{{ dungeon.content.create_date|date:'DATE_FORMAT' }}</dd>
+            <dt>{% trans 'Vérifié avec la version' %}</dt>
+            <dd><i class="fas fa-check text-success"></i> 1.60 - Éclats de Stasis (juin 2018)</dd>
+          </dl>
+          <hr>
+          <div class="btn-group d-flex">
+            <a href="{% url 'wiki-history' 'donjons' dungeon.slug %}" class="btn btn-info w-100 mx-1"><i class="fas fa-history"></i> {% trans 'Historique' %}</a>
+            <a href="{% url 'dungeon-update' dungeon.slug %}" class="btn btn-info w-100 mx-1"><i class="fas fa-edit"></i> {% trans 'Modifier' %}</a>
+          </div>
+        </div>
+      </div>
+       <div class="card border-info mb-3 sticky-top">
+          <div class="card-body">
+            <h3 class="text-center">{% trans 'Menu' %}</h3>
+            <hr>
+            {{ dungeon.content.toc|safe }}
+          </div>
+        </div>
+    </div>
+  </div>
+{% endblock %}
+
+
+{% block scripts %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.min.js" integrity="sha256-Y1rRlwTzT5K5hhCBfAFWABD4cU13QGuRN6P5apfWzVs=" crossorigin="anonymous"></script>
+  <script>
+    $('.markdown img').each( function() {
+      var $img = $(this),
+      href = $img.attr('src');
+      $img.addClass('img-thumbnail');
+      $img.wrap('<a href="' + href + '" data-toggle="lightbox"></a>');
+    });
+    $(document).on('click', '[data-toggle="lightbox"]', function(event) {
+      event.preventDefault();
+      $(this).ekkoLightbox();
+    });
+  </script>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends '_base.html' %}
+
+{% load i18n %}
+
+
+{% block title %}{% trans 'Historique' %} - {{ wiki_obj }}{% endblock %}
+
+
+{% block content %}
+  <div class="container">
+    <h1 class="text-center">{% trans 'Historique' %} - {{ wiki_obj }}</h1>
+    <hr>
+    <table class="table">
+      <thead>
+        <tr class="text-center">
+          <th scope="col">{% trans 'Version' %}</th>
+          <th scope="col">{% trans 'Date' %}</th>
+          <th scope="col">{% trans 'Auteur' %}</th>
+          <th scope="col">{% trans 'Diff' %}</th>
+          <th scope="col">{% trans 'Actions' %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for version in versions %}
+          <tr>
+            <th class="text-center align-middle">{{ version.version }}</th>
+            <td class="text-center align-middle">{{ version.create_date }}</td>
+            <td class="text-center align-middle">{{ version.by }}</td>
+            <td class="text-center align-middle">
+              {% if version.diff_count > 0 %}
+                <span class="text-success">+{{ version.diff_count }}</span>
+              {% elif version.diff_count < 0 %}
+                <span class="text-danger">{{ version.diff_count }}</span>
+              {% else %}
+                0
+              {% endif %}
+            </td>
+            <td class="text-center align-middle">TODO</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

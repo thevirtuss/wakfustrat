@@ -1,0 +1,16 @@
+{% extends '_base.html' %}
+
+{% load i18n %}
+
+
+{% block title %}{% trans 'Inscription' %}{% endblock %}
+
+
+{% block content %}
+  <div class="row">
+    <div class="col-lg-6 offset-lg-3">
+      <h1 class="text-center">{% trans 'Inscription terminée' %}</h1>
+      <div class="alert alert-success">{% trans "Voter inscription est terminée, vous pouvez maintenant vous connecter au site." %}</div>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends '_base.html' %}
+
+{% load i18n %}
+
+
+{% block title %}{% trans 'Liste des donjons' %}{% endblock %}
+
+
+{% block content %}
+  <div class="container">
+    {% if dungeon_list %}
+      <table class="table table-sm table-striped">
+        <thead>
+          <tr class="text-center">
+            <th scope="col">{% trans 'Apparence' %}</th>
+            <th scope="col">{% trans 'Nom' %}</th>
+            <th scope="col">{% trans 'Boss' %}</th>
+            <th scope="col">{% trans 'Niveau' %}</th>
+            <th scope="col">{% trans 'Zone' %}</th>
+            <th scope="col">{% trans 'Difficulté' %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for dungeon in dungeon_list %}
+            <tr>
+              <th class="text-center align-middle p-1">
+                {% if dungeon.image %}
+                  <img src="{{ dungeon.image.url }}" width="60">
+                {% else %}
+                  TODO
+                {% endif %}
+              </th>
+              <td class="text-center align-middle">
+                <a href="{{ dungeon.get_absolute_url }}">{{ dungeon.name }}</a>
+              </td>
+              <td class="text-center align-middle">{{ dungeon.boss }}</td>
+              <td class="text-center align-middle">{{ dungeon.level }}</td>
+              <td class="text-center align-middle">{{ dungeon.zone }}</td>
+              <td class="text-center align-middle">{{ dungeon.get_difficulty_icons|safe }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <div class="alert alert-warning">
+        {% trans "Aucun donjon n'est disponible pour le moment." %}
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

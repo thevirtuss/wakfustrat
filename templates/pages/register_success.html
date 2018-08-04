@@ -1,0 +1,16 @@
+{% extends '_base.html' %}
+
+{% load i18n %}
+
+
+{% block title %}{% trans 'Inscription' %}{% endblock %}
+
+
+{% block content %}
+  <div class="row">
+    <div class="col-lg-6 offset-lg-3">
+      <h1 class="text-center">{% trans 'Inscription' %}</h1>
+      <div class="alert alert-success">{% trans "Votre demande d'inscription a été prise en compte. Si l'adresse mail spécifiée n'est pas déjà utiliséee, vous allez recevoir un email contenant la dernière étape pour terminer votre inscription. Pensez à vérifier vos messages indésirables/SPAM si vous n'avez rien reçu d'ici quelques minutes. Si un problème persiste, merci de nous contacter via la page dédiée." %}</div>
+    </div>
+  </div>
+{% endblock %}

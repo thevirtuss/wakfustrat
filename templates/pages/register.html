@@ -1,0 +1,25 @@
+{% extends '_base.html' %}
+
+{% load i18n %}
+
+
+{% block title %}{% trans 'Inscription' %}{% endblock %}
+
+
+{% block content %}
+  <div class="row">
+    <div class="col-lg-4 offset-lg-4">
+      <h1 class="text-center">{% trans 'Inscription' %}</h1>
+      <form class="form pb-4" action="{% url 'register' %}" method="post">
+        {% include 'misc/_form.html' %}
+        <div class="text-center">
+          <button type="submit" class="btn btn-success btn-lg">{% trans "S'inscrire" %}</button>
+        </div>
+      </form>
+      <div class="alert alert-info">
+        {% url 'login' as login_url %}
+        {% blocktrans %}Si vous avez déjà compte vous pouvez vous <a href="{{ login_url }}">connecter</a>.{% endblocktrans %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

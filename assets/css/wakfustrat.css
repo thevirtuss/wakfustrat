@@ -1,0 +1,65 @@
+html {
+  position: relative;
+  min-height: 100%;
+}
+main {
+  min-height: 70vh;
+}
+.footer {
+  width: 100%;
+  min-height: 60px;
+  background-color: #f5f5f5;
+  padding: 20px 0;
+}
+.btn-logout {
+  font-weight: 700;
+}
+.my-account-link {
+  margin-top: 1px !important;
+}
+dd {
+  font-weight: normal;
+}
+.markdown img {
+  display: block;
+  margin: 5px auto;
+  max-width: 600px;
+  max-height: 600px;
+}
+.markdown h1 {
+  font-size: 3rem;
+  color: #17a2b8;
+  text-align: center;
+  border-bottom: solid #17a2b8;
+  margin-top: 50px;
+  margin-bottom: 20px;
+}
+.markdown h2,
+.markdown h3 {
+  color: #17a2b8;
+  margin: 20px;
+}
+a {
+  color: #17a2b8;
+}
+.toc ul {
+  list-style: none;
+  padding-left: 30px;
+}
+.sticky-top {
+  position: sticky !important;
+  top: 100px;
+}
+.wiki-name {
+  font-size: 3.5rem;
+}
+.link-unstyled,
+.link-unstyled:visited,
+.link-unstyled:hover,
+.link-unstyled:active,
+.link-unstyled:focus,
+.link-unstyled:active:hover {
+    color: inherit;
+    background-color: transparent;
+    text-decoration: none;
+}

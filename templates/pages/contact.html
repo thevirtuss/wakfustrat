@@ -1,0 +1,15 @@
+{% extends '_base.html' %}
+
+{% load i18n %}
+
+
+{% block title %}{% trans 'Contact' %}{% endblock %}
+
+
+{% block content %}
+  <div class="container">
+    <h1 class="text-center">{% trans 'Contact' %}</h1>
+    <hr>
+    <p>{% blocktrans %}Pour le moment, vous pouvez nous contacter uniquement par mail : virtuss.le.pire [AROBASE] gmail [POINT] com.{% endblocktrans %}</p>
+  </div>
+{% endblock %}

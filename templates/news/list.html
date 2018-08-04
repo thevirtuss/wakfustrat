@@ -1,0 +1,25 @@
+{% extends '_base.html' %}
+
+{% load i18n %}
+
+
+{% block title %}{% trans 'News' %}{% endblock %}
+
+
+{% block content %}
+  <div class="container">
+    <h1 class="text-center text-info">{% trans 'News' %}</h1>
+    {% for news in news_list %}
+      <h1 id="news-{{ news.slug }}" class="text-center">{{ news.name }}</h1>
+      <p class="text-center"><i class="fas fa-clock"></i> {{ news.publish_date|date:'DATE_FORMAT' }} - <i class="fas fa-user"></i> {{ news.author }}</p>
+      <p>{{ news.html|safe }}</p>
+      {% if not forloop.last %}
+        <hr>
+      {% endif %}
+    {% empty %}
+      <div class="alert alert-warning">
+        {% trans "Aucune news n'est publiée pour le moment" %}
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

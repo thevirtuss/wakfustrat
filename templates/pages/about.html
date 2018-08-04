@@ -1,0 +1,30 @@
+{% extends '_base.html' %}
+
+{% load i18n %}
+
+
+{% block title %}{% trans 'À propos' %}{% endblock %}
+
+
+{% block content %}
+  <div class="container">
+    <h1 class="text-center">{% trans 'À propos' %}</h1>
+    <hr>
+    <h2>{% trans 'WakfuStrat, kesako ?' %}</h2>
+    <p>{% blocktrans %}<strong>WafkuStart</strong> est un site regroupant des stratégies pour le jeu <a href="https://www.wakfu.com/fr/mmorpg" target="_blank">WAKFU</a>, un MMORPG édité par <a href="https://www.ankama.com/fr" target="_blank">Ankama</a>. Il s'agit d'un site non-officiel sans aucun lien avec Ankama.{% endblocktrans %}</p>
+    <p>{% blocktrans %}Nous sommes partis d'un constat simple : la majorité des précédents fan-sites sur Wakfu sont laissés à l'abandon par leurs créateurs. De plus, il était vraiment difficile pour certains d'apporter des modifications aux guides déjà éxistant pour signaler une erreur. De ce constat est né <strong>WakfuStrat</strong>, projet dans les cartons depuis plusieurs années.{% endblocktrans %}</p>
+    <h2>{% trans 'Comment est financé le site ?' %}</h2>
+    <p>{% blocktrans %}Tout d'abord il est important de préciser que le site est entièrement gratuit, sans publicité ET LE RESTERA, nous nous y engageons. Nous ne revendons aucune donnée personelle, nous n'utilisons pas de service tier pour vous pister.{% endblocktrans %}</p>
+    <p>{% blocktrans %}Actuellement le site est financé entièrement par l'équipe qui le développe. Cela représente environ 50€ par an, comprenant le nom de domaine et la location du serveur. Dans un futur proche nous mettrons en place plusieurs solutions pour que vous puissiez nous aider à financer le site.{% endblocktrans %}</p>
+    <h2>{% trans 'Je veux participer !' %}</h2>
+    <p>{% blocktrans %}Vous savez quoi ? Vous pouvez, et en plus c'est facile !{% endblocktrans %}</p>
+    <h4>{% trans 'Rédaction de guides' %}</h4>
+    <p>{% blocktrans %}Vous vous sentez l'âme d'un rédacteur ? Vous connaissez les moindres détails d'un donjon ? Venez faire partager votre expérience en écrivant un guide ! Si ce n'est pas le cas, vous pouvez toujours faire un petit peu de relecture pour s'assuer que les guides soient rédigés dans un français irréprochable et compréhensibles par le plus grand nombre.{% endblocktrans %}</p>
+    <h4>{% trans 'Développement du site' %}</h4>
+    <p>{% blocktrans %}Le site est sous licence libre, c'est à dire que vous pouvez consulter, modifier et même redistribuer son code. Pour cela il vous suffit de vous créer un compte sur <a href="https://github.com" target="_blank">GitHub</a> et d'aller sur le <a href="https://github.com/thevirtuss/wakfustrat" target="_blank">projet dédié</a>. Que vous soyez début ou expérimenté, développeur frontend ou bakcend vous êtes le bienvenu !{% endblocktrans %}</p>
+    <p>{% blocktrans %}Du côté des technologies, le site est développé avec le framework Python <a href="https://www.djangoproject.com/" target="_blank">Django</a> et <a href="https://getbootstrap.com/" target="_blank">Bootstrap 4</a> pour le design.{% endblocktrans %}</p>
+    <h2>{% trans "J'ai une idée ..." %}</h2>
+    {% url 'contact' as contact_url %}
+    <p>{% blocktrans %}N'hésitez pas à venir nous en parler via la page <a href="{{ contact_url }}">de contact</a> !{% endblocktrans %}</p>
+  </div>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% load i18n %}
+
+<html lang="fr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  </head>
+  <body>
+    <p>{% trans 'Bonjour,' %}</p>
+    {% block content %}{% endblock %}
+    <p>{% trans 'Cet email vous a été envoyé automatiquement.' %}</p>
+    <p>{% blocktrans %}Cordialement,<br/>L'équipe de WakfuStrat{% endblocktrans %}</p>
+  </body>
+</html>

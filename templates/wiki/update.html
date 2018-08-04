@@ -1,0 +1,12 @@
+{% extends 'wiki/_edit.html' %}
+
+{% load i18n %}
+
+
+{% block title %}{{ article.name }}{% endblock %}
+
+
+{% block edit_title %}{{ article.name }}{% endblock %}
+
+
+{% block submit_button %}{% trans 'Mettre à jour' %}{% endblock %}

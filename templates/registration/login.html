@@ -1,0 +1,26 @@
+{% extends '_base.html' %}
+
+{% load i18n %}
+
+
+{% block title %}{% trans 'Connexion' %}{% endblock %}
+
+
+{% block content %}
+  <div class="row">
+    <div class="col-lg-4 offset-lg-4">
+      <h1 class="text-center">{% trans 'Connexion' %}</h1>
+      <form class="form pb-4" action="{% url 'login' %}" method="post">
+        {% include 'misc/_form.html' %}
+        <div class="text-center">
+          <button type="submit" class="btn btn-success">{% trans 'Connexion' %}</button>
+        </div>
+      </form>
+      <a href="#">{% trans 'Mot de passe oublié ?' %}</a>
+      <div class="alert alert-info mt-4">
+        {% url 'register' as register_url %}
+        {% blocktrans %}Si vous n'avez pas de compte vous pouvez vous <a href="{{ register_url }}">inscrire</a> sur WakfuStrat.{% endblocktrans %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
