@@ -61,6 +61,11 @@
       </nav>
     </header>
     <main role="main" class="container-fluid pt-5">
+      <div class="alert alert-warning text-center col-lg-4 offset-lg-4 col-sm-12">
+        <h5><i class="fas fa-bell"></i> {% trans 'Version bêta' %}</h5><br/>
+        {% trans 'Le site est actuellement en version bêta. Toutes les fonctionnalités ne sont pas terminées et les mails sont désactivés.  ' %}
+      </div>
+      <hr>
       {% block content %}{% endblock %}
     </main>
     <footer class="footer mt-5">

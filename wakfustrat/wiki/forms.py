@@ -8,7 +8,7 @@ class DungeonForm(forms.ModelForm):
     """
 
     """
-    content = forms.CharField(label=_('Contenu'), widget=forms.Textarea)
+    content = forms.CharField(label=_('Contenu'), widget=forms.Textarea, required=False)
 
     class Meta:
         exclude = ('slug',)
