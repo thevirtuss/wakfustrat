@@ -14,6 +14,7 @@ class Zone(models.Model):
     slug = models.SlugField(_('slug'), max_length=128, unique=True)
 
     class Meta:
+        ordering = ('slug',)
         verbose_name = _('zone')
         verbose_name_plural = _('zones')
 
@@ -29,6 +30,7 @@ class SubZone(models.Model):
     slug = models.SlugField(_('slug'), max_length=128, unique=True)
 
     class Meta:
+        ordering = ('slug',)
         verbose_name = _('sous-zone')
         verbose_name_plural = _('sous-zones')
 
