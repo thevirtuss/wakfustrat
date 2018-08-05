@@ -40,7 +40,7 @@
           <ul class="navbar-nav right">
             {% if user.is_authenticated %}
               <li class="nav-item px-2">
-                <a class="nav-link  my-account-link" href="#">{% trans 'Mon compte' %}</a>
+                <a class="nav-link  my-account-link" href="{% url 'my-account' %}">{% trans 'Mon compte' %}</a>
               </li>
               <li class="nav-item px-2">
                 <form action="{% url 'logout' %}" class="d-inline" method="post">

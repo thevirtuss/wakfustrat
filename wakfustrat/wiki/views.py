@@ -6,7 +6,10 @@ from django.views.generic import CreateView, DetailView, ListView, UpdateView, V
 
 from wakfustrat.common.md import generate_html
 from wakfustrat.wiki.forms import DungeonForm
-from wakfustrat.wiki.models import Content, Dungeon, Image
+from wakfustrat.wiki.models import Boss, Content, Dungeon, Image
+
+
+# Generic
 
 
 class WikiHistoryView(ListView):
@@ -18,12 +21,24 @@ class WikiHistoryView(ListView):
         try:
             klass = {
                 'donjons': Dungeon,
+                'boss-ultimes': Boss
             }[self.kwargs.get('part')]
         except KeyError:
             raise Http404
         obj = get_object_or_404(klass, slug=self.kwargs.get('slug'))
         self.extra_context = {'wiki_obj': obj}
         return obj.contents.order_by('-version')
+
+
+class ImageUploadView(LoginRequiredMixin, View):
+
+    def post(self, request, *args, **kwargs):
+        image = Image(image=request.FILES.get('file'), by=request.user)
+        image.save()
+        return JsonResponse({'url': image.image.url})
+
+
+# Dungeon
 
 
 class NewDungeonView(LoginRequiredMixin, CreateView):
@@ -104,11 +119,3 @@ class DungeonDetailView(DetailView):
     """
     model = Dungeon
     template_name = 'wiki/dungeon/detail.html'
-
-
-class ImageUploadView(LoginRequiredMixin, View):
-
-    def post(self, request, *args, **kwargs):
-        image = Image(image=request.FILES.get('file'), by=request.user)
-        image.save()
-        return JsonResponse({'url': image.image.url})

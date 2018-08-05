@@ -20,7 +20,7 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['favorite'] = Dungeon.objects.filter(status='published').last()
-        context['news_list'] = get_published_news()[:5]
+        context['news_list'] = get_published_news()[:3]
         return context
 
 

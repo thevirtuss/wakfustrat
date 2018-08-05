@@ -1,0 +1,28 @@
+{% extends '_base.html' %}
+
+{% load i18n %}
+
+
+{% block title %}{% trans 'Mon compte' %}{% endblock %}
+
+
+{% block content %}
+  <div class="row">
+    <div class="col-lg-12">
+      <h1 class="text-center text-info">{% block member_title %}{% endblock %}</h1>
+      <hr>
+    </div>
+    <div class="col-lg-2">
+      <div class="card border-0">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><i class="fas fa-users-cog"></i> <a href="{% url 'my-account' %}">{% trans 'Mes informations' %}</a></li>
+          <li class="list-group-item"><i class="fas fa-key"></i> <a href="{% url 'my-account-password' %}">{% trans 'Changer mon mot de passe' %}</a></li>
+          <li class="list-group-item"><i class="fas fa-at"></i> <a href="#">{% trans 'Email et notifications' %}</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-lg-10">
+      {% block member_content %}{% endblock %}
+    </div>
+  </div>
+{% endblock %}

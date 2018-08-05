@@ -46,7 +46,7 @@ class Migration(migrations.Migration):
                 ('boss', models.CharField(max_length=64, verbose_name='boss')),
                 ('level', models.PositiveSmallIntegerField(validators=[django.core.validators.MaxValueValidator(200)], verbose_name='niveau')),
                 ('difficulty', models.PositiveSmallIntegerField(choices=[(0, 'Très facile'), (1, 'Facile'), (2, 'Normal'), (3, 'Difficile'), (4, 'Très difficile')], help_text="Il s'agit d'une indication subjective à propos de la complexité de la stratégie du donjon", verbose_name='difficulté')),
-                ('image', models.ImageField(blank=True, null=True, upload_to=wakfustrat.wiki.models.upload_dungeon_image, verbose_name='image')),
+                ('image', models.ImageField(blank=True, null=True, upload_to=wakfustrat.wiki.models.upload_to_wiki_page_image, verbose_name='image')),
                 ('subzone', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='common.SubZone', verbose_name='sous-zone')),
                 ('zone', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='common.Zone', verbose_name='zone')),
             ],

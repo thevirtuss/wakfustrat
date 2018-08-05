@@ -24,6 +24,7 @@ from wakfustrat.pages.views import HomeView, RegisterView, RegisterSuccessView, 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('membre/', include('wakfustrat.member.urls')),
     path('news/', include('wakfustrat.news.urls')),
     path('wiki/', include('wakfustrat.wiki.urls')),
 

@@ -140,14 +140,7 @@ DATE_INPUT_FORMATS = [
 
 # Misc
 
-INTERNAL_IPS = [
-    '127.0.0.1'
-]
-
 FIRST_DAY_OF_WEEK = 1
-
-
-# Misc
 
 AUTH_USER_MODEL = 'member.User'
 
@@ -160,3 +153,9 @@ INTERNAL_IPS = [
 SITE_ID = 1
 
 LOGIN_URL = '/users/login/'  # TODO
+
+
+try:
+    from wakfustrat.local_settings import *
+except ImportError:
+    pass

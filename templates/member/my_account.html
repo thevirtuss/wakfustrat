@@ -1,0 +1,32 @@
+{% extends 'member/_base.html' %}
+
+{% load i18n %}
+
+
+{% block title %}{% trans 'Mon compte' %}{% endblock %}
+
+
+{% block member_title %}{% trans 'Mes informations' %}{% endblock %}
+
+
+{% block member_content %}
+  <dl>
+    <dt>{% trans 'Pseudo' %}</dt>
+    <dd>{{ usr.username }}</dd>
+    <dt>{% trans 'Adresse mail' %}</dt>
+    <dd>{{ usr.email|default_if_none:''|default:_('Non définie') }}</dd>
+    <dt>{% trans 'Serveur' %}</dt>
+    <dd>{{ usr.get_server_display|default_if_none:_('Non défini') }}</dd>
+    <dt>{% trans 'Membre depuis le' %}</dt>
+    <dd>{{ usr.date_joined|date:'DATE_FORMAT' }} ({% blocktrans with since=usr.date_joined|timesince %}il y a {{ since }}{% endblocktrans %})</dd>
+    <dt>{% trans 'Type de compte' %}</dt>
+    <dd>
+      {% if usr.is_superuser %}
+        {% trans 'Administrateur' %}
+      {% else %}
+        {% trans 'Membre' %}
+      {% endif %}
+    </dd>
+  </dl>
+  <a href="{% url 'my-account-update' %}" class="btn btn-info">{% trans 'Mettre à jour mon profil' %}</a>
+{% endblock %}
