@@ -67,7 +67,7 @@ class NewDungeonView(LoginRequiredMixin, CreateView):
         content.content_object = dungeon
         content.save()
 
-        return HttpResponseRedirect(self.get_success_url())
+        return HttpResponseRedirect(dungeon.get_absolute_url())
 
 
 class DungeonUpdateView(LoginRequiredMixin, UpdateView):
@@ -101,7 +101,7 @@ class DungeonUpdateView(LoginRequiredMixin, UpdateView):
         content.content_object = obj
         content.save()
 
-        return HttpResponseRedirect(self.get_success_url())
+        return HttpResponseRedirect(obj.get_success_url())
 
 
 class DungeonListView(ListView):

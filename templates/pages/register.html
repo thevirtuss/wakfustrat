@@ -10,6 +10,9 @@
   <div class="row">
     <div class="col-lg-4 offset-lg-4">
       <h1 class="text-center">{% trans 'Inscription' %}</h1>
+      <div class="alert alert-warning">
+        {% trans 'Nous vous conseillons de ne pas utiliser le même mot de passe que sur votre compte Ankama afin de prévenir tout risque.' %}
+      </div>
       <form class="form pb-4" action="{% url 'register' %}" method="post">
         {% include 'misc/_form.html' %}
         <div class="text-center">
