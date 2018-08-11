@@ -1,83 +1,167 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404
-from django.utils.text import slugify
 from django.views.generic import CreateView, DetailView, ListView, UpdateView, View
 
 from wakfustrat.common.md import generate_html
-from wakfustrat.wiki.forms import DungeonForm
+from wakfustrat.common.models import Zone
+from wakfustrat.wiki.forms import BossForm, DungeonForm
 from wakfustrat.wiki.models import Boss, Content, Dungeon, Image
+
+
+BOSS = 'boss-ultimes'
+DUNGEON = 'donjons'
+
+
+class WikiPageMixin(object):
+
+    part = None
+    klass = None
+    form_klass = None
+    template_part = None
+
+    def dispatch(self, request, *args, **kwargs):
+        try:
+            self.part = self.kwargs['part']
+            self.klass = {
+                DUNGEON: Dungeon,
+                BOSS: Boss
+            }[self.part]
+            self.form_klass = {
+                DUNGEON: DungeonForm,
+                BOSS: BossForm
+            }[self.part]
+            self.template_part = {
+                DUNGEON: 'dungeon',
+                BOSS: 'boss',
+            }[self.part]
+            part_name = {
+                DUNGEON: 'Donjons',
+                BOSS: 'Boss Ultimes',
+            }[self.part]
+            self.extra_context = {
+                'part': self.part,
+                'part_name': part_name
+            }
+        except KeyError:
+            raise Http404('Part not found')
+        return super().dispatch(request, *args, **kwargs)
+
+    @staticmethod
+    def save_content(obj, markdown, user, previous=None):
+        content = Content()
+        content.markdown = markdown
+        content.html, content.toc = generate_html(markdown)
+        if previous is not None:
+            content.version = previous.version + 1
+            content.diff_count = len(markdown) - len(previous.markdown)
+        else:
+            content.version = 0
+        content.by = user
+        content.content_object = obj
+        content.save()
 
 
 # Generic
 
 
-class WikiHistoryView(ListView):
-
+class WikiHistoryView(WikiPageMixin, ListView):
+    """
+    Display the history of a page.
+    """
     context_object_name = 'versions'
     template_name = 'wiki/history.html'
 
     def get_queryset(self):
-        try:
-            klass = {
-                'donjons': Dungeon,
-                'boss-ultimes': Boss
-            }[self.kwargs.get('part')]
-        except KeyError:
-            raise Http404
-        obj = get_object_or_404(klass, slug=self.kwargs.get('slug'))
+        obj = get_object_or_404(self.klass, slug=self.kwargs.get('slug'))
         self.extra_context = {'wiki_obj': obj}
-        return obj.contents.order_by('-version')
+        return obj.contents.order_by('-version').select_related('by')
 
 
 class ImageUploadView(LoginRequiredMixin, View):
-
+    """
+    Upload an image.
+    """
     def post(self, request, *args, **kwargs):
         image = Image(image=request.FILES.get('file'), by=request.user)
         image.save()
         return JsonResponse({'url': image.image.url})
 
 
-# Dungeon
+class PageCreateView(LoginRequiredMixin, WikiPageMixin, CreateView):  # TODO : rename
 
+    template_name = 'wiki/create.html'
 
-class NewDungeonView(LoginRequiredMixin, CreateView):
-
-    form_class = DungeonForm
-    template_name = 'wiki/new.html'
+    def get_form_class(self):
+        return self.form_klass
 
     def form_valid(self, form):
         # TODO : vérifier que slug != management
         data = form.cleaned_data
-        dungeon = Dungeon()
-        dungeon.name = data.get('name')
-        dungeon.slug = slugify(data.get('name'))
-        dungeon.boss = data.get('boss')
-        dungeon.level = data.get('level')
-        dungeon.difficulty = data.get('difficulty')
-        dungeon.zone = data.get('zone')
-        dungeon.subzone = data.get('subzone')
-        dungeon.image = data.get('image')
-        dungeon.save()
-        content = Content()
-        content.markdown = data.get('content')
-        content.html, content.toc = generate_html(data.get('content'))
-        content.version = 0
-        content.by = self.request.user
-        content.content_object = dungeon
-        content.save()
+        obj = form.save()
+        self.save_content(obj, data.get('content'), self.request.user)
 
-        return HttpResponseRedirect(dungeon.get_absolute_url())
+        return HttpResponseRedirect(obj.get_absolute_url())
 
 
-class DungeonUpdateView(LoginRequiredMixin, UpdateView):
+class PageDetailView(WikiPageMixin, DetailView):
     """
-
+    View a dungeon.
     """
-    context_object_name = 'article'
-    form_class = DungeonForm
-    model = Dungeon
+    context_object_name = 'page'
+
+    def get_queryset(self):
+        queryset = self.klass._default_manager
+        if self.part in [DUNGEON, BOSS]:
+            queryset = queryset.select_related('zone', 'subzone')
+        return queryset.all()
+
+    def get_template_names(self):
+        return 'wiki/{0}/detail.html'.format(self.template_part)
+
+
+class PageListView(WikiPageMixin, ListView):
+    """
+    List all pages in a part.
+    """
+    def get_queryset(self):
+        queryset = self.klass._default_manager
+
+        if self.part in [DUNGEON, BOSS]:
+            queryset = queryset.order_by('-level').select_related('zone')
+
+        if self.part == DUNGEON and self.request.GET.get('zone') is not None:
+            zone = get_object_or_404(Zone, slug=self.request.GET.get('zone'))
+            queryset = queryset.filter(zone=zone)
+
+        return queryset.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.part == DUNGEON:
+            dungeons = Dungeon.objects
+            context['published_count'] = dungeons.filter(status='published').count()
+            context['draft_count'] = dungeons.filter(status='draft').count()
+            context['zones'] = Zone.objects.filter(dungeon__in=dungeons.all()).order_by('slug').distinct()
+            context['zone'] = self.request.GET.get('zone')
+        return context
+
+    def get_template_names(self):
+        return 'wiki/{0}/list.html'.format(self.template_part)
+
+
+class PageUpdateView(LoginRequiredMixin, WikiPageMixin, UpdateView):
+    """
+    Update a page.
+    """
+    context_object_name = 'page'
     template_name = 'wiki/update.html'
+
+    def get_form_class(self):
+        return self.form_klass
+
+    def get_queryset(self):
+        return self.klass._default_manager.all()
 
     def get_initial(self):
         initial = super().get_initial()
@@ -90,32 +174,6 @@ class DungeonUpdateView(LoginRequiredMixin, UpdateView):
         data = form.cleaned_data
         obj = form.save()
 
-        previous = obj.content
+        self.save_content(obj, data.get('content'), self.request.user, previous=obj.content)
 
-        content = Content()
-        content.markdown = data.get('content')
-        content.html, content.toc = generate_html(data.get('content'))
-        content.version = previous.version + 1
-        content.by = self.request.user
-        content.diff_count = len(data.get('content')) - len(previous.markdown)
-        content.content_object = obj
-        content.save()
-
-        return HttpResponseRedirect(obj.get_success_url())
-
-
-class DungeonListView(ListView):
-
-    model = Dungeon
-    template_name = 'wiki/dungeon/list.html'
-
-    def get_queryset(self):
-        return Dungeon.objects.filter(status__in=['published', 'draft']).order_by('-level').all()
-
-
-class DungeonDetailView(DetailView):
-    """
-    View a dungeon.
-    """
-    model = Dungeon
-    template_name = 'wiki/dungeon/detail.html'
+        return HttpResponseRedirect(obj.get_absolute_url())

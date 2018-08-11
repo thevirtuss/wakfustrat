@@ -3,19 +3,19 @@
 {% load i18n %}
 
 
-{% block title %}{{ page.name }} - {{ part_name }}{% endblock %}
+{% block title %}{{ page.boss }} - {{ part_name }}{% endblock %}
 
 
-{% block page_name %}{{ page.name }} - Niveau {{ page.level }}{% endblock %}
+{% block page_name %}{{ page.boss }} - Niveau {{ page.level }}{% endblock %}
 
 
 {% block info_box %}
-  <dt>{% trans 'Nom' %}</dt>
-  <dd>{{ page.name }}</dd>
-  <dt>{% trans 'Niveau' %}</dt>
-  <dd>{{ page.level }}</dd>
   <dt>{% trans 'Boss' %}</dt>
   <dd>{{ page.boss }}</dd>
+  <dt>{% trans 'Niveau' %}</dt>
+  <dd>{{ page.level }}</dd>
+  <dt>{% trans 'Instance' %}</dt>
+  <dd>{{ page.name }}</dd>
   <dt>{% trans 'Zone' %}</dt>
   <dd>{{ page.zone }} - {{ page.subzone }}</dd>
   <dt>{% trans 'Difficulté' %}</dt>

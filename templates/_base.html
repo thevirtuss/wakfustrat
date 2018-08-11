@@ -5,8 +5,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="TODO">
-    <link rel="icon" href="TODO.png">
+    <meta name="description" content="{% trans 'Le site communautaire pour les stratégies de donjons, boss-utlimes, métiers et quêtes sur le MMORPG Wakfu' %}">
+    <link rel="icon" href="{% static 'img/ws_default.png' %}">
     <title>{% block title %}{% endblock %} - WakfuStrat</title>
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/wakfustrat.css' %}" rel="stylesheet">
@@ -28,7 +28,10 @@
               <a class="nav-link" href="{% url 'news-list' %}">{% trans 'News' %}</a>
             </li>
             <li class="nav-item px-2">
-              <a class="nav-link" href="{% url 'dungeon-list' %}">{% trans 'Donjons' %}</a>
+              <a class="nav-link" href="{% url 'wiki:page-list' 'donjons' %}">{% trans 'Donjons' %}</a>
+            </li>
+            <li class="nav-item px-2">
+              <a class="nav-link" href="{% url 'wiki:page-list' 'boss-ultimes' %}">{% trans 'Boss Ultimes' %}</a>
             </li>
             <li class="nav-item px-2">
               <a class="nav-link" href="{% url 'about' %}">{% trans 'À propos' %}</a>
@@ -61,11 +64,18 @@
       </nav>
     </header>
     <main role="main" class="container-fluid pt-5">
-      <div class="alert alert-warning text-center col-lg-4 offset-lg-4 col-sm-12">
+      <div class="alert alert-danger text-center col-lg-4 offset-lg-4 col-sm-12">
         <h5><i class="fas fa-bell"></i> {% trans 'Version bêta' %}</h5><br/>
-        {% trans 'Le site est actuellement en version bêta. Toutes les fonctionnalités ne sont pas terminées et les mails sont désactivés.  ' %}
+        {% trans 'Le site est actuellement en version bêta. Toutes les fonctionnalités ne sont pas terminées.' %}
       </div>
       <hr>
+      {% if messages %}
+        <div class="container">
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
       {% block content %}{% endblock %}
     </main>
     <footer class="footer mt-5">

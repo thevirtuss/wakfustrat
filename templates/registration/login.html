@@ -16,7 +16,7 @@
           <button type="submit" class="btn btn-success">{% trans 'Connexion' %}</button>
         </div>
       </form>
-      <a href="#">{% trans 'Mot de passe oublié ?' %}</a>
+      <a href="{% url 'password-reset-request' %}">{% trans 'Mot de passe oublié ?' %}</a>
       <div class="alert alert-info mt-4">
         {% url 'register' as register_url %}
         {% blocktrans %}Si vous n'avez pas de compte vous pouvez vous <a href="{{ register_url }}">inscrire</a> sur WakfuStrat.{% endblocktrans %}

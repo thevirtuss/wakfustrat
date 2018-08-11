@@ -60,3 +60,18 @@ class UpdateMyPasswordForm(SetPasswordBaseForm):
             raise forms.ValidationError(_("Le nouveau mot de passe doit être différent de l'actuel."))
 
         return cleaned_data
+
+
+class ResetPasswordRequestForm(forms.Form):
+    """
+    Form to reset password (request form).
+    """
+    email = forms.EmailField(label=_('Adresse mail'))
+
+
+class ResetPasswordForm(SetPasswordBaseForm):
+    """
+    Form to reset password (new password form).
+    """
+    password = forms.CharField(label=_('Nouveau mot de passe'), widget=forms.PasswordInput)
+    password2 = forms.CharField(label=_('Nouveau mot de passe (confirmation)'), widget=forms.PasswordInput)

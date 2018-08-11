@@ -1,0 +1,19 @@
+{% extends '_base.html' %}
+
+{% load i18n %}
+
+
+{% block title %}{% trans 'Réinitialiser mon mot de passe' %}{% endblock %}
+
+
+{% block content %}
+  <div class="container">
+    <h1 class="text-center">{% trans 'Réinitialiser mon mot de passe' %}</h1>
+    <form action="." method="post">
+      {% include 'misc/_form.html' %}
+      <div class="text-center">
+        <button type="submit" class="btn btn-success">{% trans 'Envoyer' %}</button>
+      </div>
+    </form>
+  </div>
+{% endblock %}

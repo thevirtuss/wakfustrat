@@ -1,0 +1,68 @@
+{% extends '_base.html' %}
+
+{% load i18n static %}
+
+
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/ekko-lightbox.css' %}" />
+{% endblock %}
+
+
+{% block content %}
+  <h1 class="text-center wiki-name">{% block page_name %}{% endblock %}</h1>
+  <hr>
+  <div class="row">
+    <div class="col-lg-9 markdown">
+      {% if page.status == 'draft' %}
+        <div class="alert alert-warning">
+          <i class="fas fa-exclamation-triangle"></i> {% trans 'Le contenu que vous lisez est actuellement au stade de "Brouillon". Il peut comporter des informations manquantes voir fausses. Nous vous invitons à nous aider à le terminer !' %}
+        </div>
+      {% endif %}
+      {{ page.content.html|safe }}
+    </div>
+    <div class="col-lg-3 py-4">
+      <div class="card border-info mb-3">
+        <div class="card-body">
+          <h3 class="text-center">{% trans 'Informations' %}</h3>
+          <hr>
+          <dl>
+            {% block info_box %}{% endblock %}
+            <dt>{% trans 'Dernière mise à jour' %}</dt>
+            <dd>{{ page.content.create_date|date:'DATE_FORMAT' }}</dd>
+            <dt>{% trans 'Vérifié avec la version' %}</dt>
+            <dd><i class="fas fa-check text-success"></i> 1.60 - Éclats de Stasis (juin 2018)</dd>
+          </dl>
+          <hr>
+          <div class="btn-group d-flex">
+            <a href="{% url 'wiki:history' part page.slug %}" class="btn btn-info w-100 mx-1"><i class="fas fa-history"></i> {% trans 'Historique' %}</a>
+            <a href="{% url 'wiki:page-update' part page.slug %}" class="btn btn-info w-100 mx-1"><i class="fas fa-edit"></i> {% trans 'Modifier' %}</a>
+          </div>
+        </div>
+      </div>
+       <div class="card border-info mb-3 sticky-top">
+          <div class="card-body">
+            <h3 class="text-center">{% trans 'Menu' %}</h3>
+            <hr>
+            {{ page.content.toc|safe }}
+          </div>
+        </div>
+    </div>
+  </div>
+{% endblock %}
+
+
+{% block scripts %}
+  <script src="{% static 'js/ekko-lightbox.min.js' %}"></script>
+  <script>
+    $('.markdown img').each( function() {
+      var $img = $(this),
+      href = $img.attr('src');
+      $img.addClass('img-thumbnail');
+      $img.wrap('<a href="' + href + '" data-toggle="lightbox"></a>');
+    });
+    $(document).on('click', '[data-toggle="lightbox"]', function(event) {
+      event.preventDefault();
+      $(this).ekkoLightbox();
+    });
+  </script>
+{% endblock %}

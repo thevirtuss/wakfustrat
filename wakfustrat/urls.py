@@ -19,7 +19,7 @@ from django.contrib import admin
 from django.urls import include, path
 
 from wakfustrat.pages.views import HomeView, RegisterView, RegisterSuccessView, RegisterValidationView, LoginView, \
-    LogoutView, AboutView, ContactView
+    LogoutView, AboutView, ContactView, ResetPasswordRequestView, ResetPasswordView
 
 
 urlpatterns = [
@@ -28,19 +28,23 @@ urlpatterns = [
     path('news/', include('wakfustrat.news.urls')),
     path('wiki/', include('wakfustrat.wiki.urls')),
 
-    path('a-propos//', AboutView.as_view(), name='about'),
+    path('a-propos/', AboutView.as_view(), name='about'),
     path('contact/', ContactView.as_view(), name='contact'),
     path('connexion/', LoginView.as_view(), name='login'),
     path('déconnexion/', LogoutView.as_view(), name='logout'),
     path('inscription/', RegisterView.as_view(), name='register'),
     path('inscription/succès/', RegisterSuccessView.as_view(), name='register-success'),
-    path('inscription/validation/<token>/', RegisterValidationView.as_view(), name='register-validation'),
+    path('inscription/validation/<uuid:token>/', RegisterValidationView.as_view(), name='register-validation'),
+    path('réiitialiser-mon-mot-de-passe/', ResetPasswordRequestView.as_view(), name='password-reset-request'),
+    path('réiitialiser-mon-mot-de-passe/<uuid:token>/', ResetPasswordView.as_view(), name='password-reset-reset'),
 
     path('', HomeView.as_view(), name='home'),
 
 ]
 
 if settings.DEBUG:
+    import debug_toolbar
+
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
+    urlpatterns = [path('__debug__/', include(debug_toolbar.urls))] + urlpatterns

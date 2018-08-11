@@ -1,6 +1,5 @@
 import uuid
 
-from bs4 import BeautifulSoup
 from model_utils.fields import StatusField
 
 from django.conf import settings
@@ -9,6 +8,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.validators import MaxValueValidator
 from django.db import models
 from django.shortcuts import reverse
+from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
 from wakfustrat.common.models import SubZone, Zone
@@ -51,7 +51,7 @@ class Content(models.Model):
 
 def upload_to_wiki_page_image(instance, filename):
     extension = filename.split('.')[-1].lower()
-    return 'wiki/dungeons/{0}.{1}'.format(uuid.uuid4().hex, extension)
+    return 'wiki/{0}.{1}'.format(uuid.uuid4().hex, extension)
 
 
 class WikiCategoryBase(models.Model):
@@ -59,7 +59,6 @@ class WikiCategoryBase(models.Model):
     Base used for all types in the wiki.
     """
     STATUS = (
-        ('empty', _('Vide')),
         ('draft', _('Brouillon')),
         ('published', _('Terminé'))
     )
@@ -75,6 +74,12 @@ class WikiCategoryBase(models.Model):
     @property
     def content(self):
         return self.contents.last()
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        self.slug = slugify(self.name)
+        super().save()
+
 
 # Per type
 
@@ -129,7 +134,7 @@ class Dungeon(WikiDungeonBase):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('dungeon-detail', args=[self.slug])
+        return reverse('wiki:page-detail', args=['donjons', self.slug])
 
 
 class Boss(WikiDungeonBase):
@@ -141,7 +146,7 @@ class Boss(WikiDungeonBase):
         verbose_name_plural = _('Boss ultimes')
 
     def __str__(self):
-        return self.name
+        return self.boss
 
     def get_absolute_url(self):
-        return ''
+        return reverse('wiki:page-detail', args=['boss-ultimes', self.slug])

@@ -64,16 +64,13 @@
         <div class="card-body text-primary text-center">
           <h3>{% trans 'Guides' %}</h3>
           <ul class="list-unstyled">
-            <li>{% trans 'Donjons' %} : x</li>
-            <li>{% trans 'Boss-ultimes' %} : x</li>
-            <li>{% trans 'Métiers' %} : x</li>
-            <li>{% trans 'Quêtes' %} : x</li>
-            <li>{% trans 'Autres' %} : x</li>
+            <li>{% trans 'Donjons' %} : {{ stats.dungeons }}</li>
+            <li>{% trans 'Boss-ultimes' %} : {{ stats.boss }}</li>
           </ul>
           <h3>{% trans 'Communauté' %}</h3>
           <ul class="list-unstyled">
-            <li>{% trans 'Membre' %} : x</li>
-            <li>{% trans 'Éditions' %} : x</li>
+            <li>{% trans 'Membre' %} : {{ stats.users }}</li>
+            <li>{% trans 'Éditions' %} : {{ stats.editions }}</li>
           </ul>
         </div>
       </div>
