@@ -12,8 +12,8 @@
     {% if boss_list %}
       <div class="row">
         {% for boss in boss_list %}
-          <div class="col-lg-3 p-0">
-            <div class="card m-1">
+          <div class="col-lg-3 p-0 my-1">
+            <div class="card m-1 h-100">
               <a href="{{ boss.get_absolute_url }}">
                 {% if boss.image %}
                   {% thumbnail boss.image "400x400" crop="center" as im %}
