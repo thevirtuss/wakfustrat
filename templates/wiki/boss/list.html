@@ -12,24 +12,26 @@
     {% if boss_list %}
       <div class="row">
         {% for boss in boss_list %}
-          <div class="col-lg-3 card p-0 m-1">
-            <a href="{{ boss.get_absolute_url }}">
-              {% if boss.image %}
-                {% thumbnail boss.image "400x400" crop="center" as im %}
-                  <img class="card-img-top" src="{{ im.url }}"  alt="{{ boss.boss }}">
-                {% endthumbnail %}
-              {% else %}
-                <img class="card-img-top" src="{% static 'img/ws_default.png' %}" alt="{{ boss.boss }}">
-              {% endif %}
-              <div class="card-body text-center">
-                <h5 class="card-title">Niv. {{ boss.level }} - {{ boss.boss }}</h5>
+          <div class="col-lg-3 p-0">
+            <div class="card m-1">
+              <a href="{{ boss.get_absolute_url }}">
+                {% if boss.image %}
+                  {% thumbnail boss.image "400x400" crop="center" as im %}
+                    <img class="card-img-top" src="{{ im.url }}"  alt="{{ boss.boss }}">
+                  {% endthumbnail %}
+                {% else %}
+                  <img class="card-img-top" src="{% static 'img/ws_default.png' %}" alt="{{ boss.boss }}">
+                {% endif %}
+                <div class="card-body text-center">
+                  <h5 class="card-title">Niv. {{ boss.level }} - {{ boss.boss }}</h5>
                   {% if boss.status == 'draft' %}
                     <span class="badge badge-warning">{% trans 'brouillon' %}</span>
                   {% else %}
                     <span class="badge badge-success">{% trans 'vérifié 1.60' %}</span>
                   {% endif %}
-              </div>
-            </a>
+                </div>
+              </a>
+            </div>
           </div>
         {% endfor %}
       </div>

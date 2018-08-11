@@ -17,7 +17,7 @@
   <dt>{% trans 'Boss' %}</dt>
   <dd>{{ page.boss }}</dd>
   <dt>{% trans 'Zone' %}</dt>
-  <dd>{{ page.zone }} - {{ page.subzone }}</dd>
+  <dd>{{ page.zone }}{% if page.subzone %} - {{ page.subzone }}{% endif %}</dd>
   <dt>{% trans 'Difficulté' %}</dt>
   <dd>{{ page.get_difficulty_icons|safe }}</dd>
 {% endblock %}
