@@ -16,6 +16,6 @@ def send_email(subject, to, template, context=None):
 
     body = render_to_string(template, default_context)
 
-    msg = EmailMessage('[WakfuStrat] {0}'.format(subject), body, 'no-reply@wakfustrat.fr', to)
+    msg = EmailMessage('[WakfuStrat] {0}'.format(subject), body, 'contact@wakfustrat.fr', to)
     msg.content_subtype = 'html'
     msg.send()
