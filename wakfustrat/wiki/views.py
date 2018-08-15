@@ -1,3 +1,5 @@
+from bs4 import BeautifulSoup
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404
@@ -61,6 +63,15 @@ class WikiPageMixin(object):
         content.content_object = obj
         content.save()
 
+        obj.images.set(Image.objects.none())
+        soup = BeautifulSoup(content.html, 'html.parser')
+        for image in soup.find_all('img'):
+            try:
+                image_obj = Image.objects.get(image=image.get('src').replace('/media/', ''))
+                obj.images.add(image_obj)
+            except Image.DoesNotExist:
+                pass
+
 
 # Generic
 
@@ -74,8 +85,21 @@ class WikiHistoryView(WikiPageMixin, ListView):
 
     def get_queryset(self):
         obj = get_object_or_404(self.klass, slug=self.kwargs.get('slug'))
-        self.extra_context = {'wiki_obj': obj}
+        self.extra_context.update({'page': obj})
         return obj.contents.order_by('-version').select_related('by')
+
+
+class WikiImagesView(WikiPageMixin, ListView):
+    """
+    Display images linked to a page.
+    """
+    context_object_name = 'images'
+    template_name = 'wiki/images.html'
+
+    def get_queryset(self):
+        obj = get_object_or_404(self.klass, slug=self.kwargs.get('slug'))
+        self.extra_context.update({'page': obj})
+        return obj.images.all()
 
 
 class ImageUploadView(LoginRequiredMixin, View):
@@ -88,7 +112,7 @@ class ImageUploadView(LoginRequiredMixin, View):
         return JsonResponse({'url': image.image.url})
 
 
-class PageCreateView(LoginRequiredMixin, WikiPageMixin, CreateView):  # TODO : rename
+class PageCreateView(LoginRequiredMixin, WikiPageMixin, CreateView):
 
     template_name = 'wiki/create.html'
 

@@ -1,0 +1,33 @@
+{% extends '_base.html' %}
+
+{% load i18n %}
+{% load thumbnail %}
+
+
+{% block title %}{% trans 'Images' %} - {{ page }}{% endblock %}
+
+
+{% block content %}
+  <div class="container-fluid">
+    {% include 'wiki/include/_wiki_header.html' with header='images' %}
+    <hr>
+    <h1 class="text-center">{% trans 'Images' %} - {{ page }}</h1>
+    <hr>
+    {% if images %}
+      <div class="row">
+        {% for image in images %}
+          <div class="col-lg-2">
+            {% thumbnail image.image "400x400" crop="center" as im %}
+              <img class="img-fluid img-thumbnail" src="{{ im.url }}">
+            {% endthumbnail %}
+            <p class="text-center">{% blocktrans with author=image.by.username upload_date=image.date|date:'DATE_FORMAT' %}Par {{ author }} le {{ upload_date }}{% endblocktrans %}</p>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="alert alert-warning">
+        {% trans "Il n'y a pas d'image associée à cettte page." %}
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

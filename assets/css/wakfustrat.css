@@ -59,7 +59,14 @@ a {
 .link-unstyled:active,
 .link-unstyled:focus,
 .link-unstyled:active:hover {
-    color: inherit;
-    background-color: transparent;
-    text-decoration: none;
+  color: inherit;
+  background-color: transparent;
+  text-decoration: none;
+}
+#wiki-edit-form .form-group {
+  max-width: 600px;
+  margin: auto;
+}
+#markdownEditor {
+  margin: 20px 0;
 }

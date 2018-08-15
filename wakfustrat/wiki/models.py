@@ -31,6 +31,13 @@ class Image(models.Model):
     date = models.DateTimeField(_('date'), auto_now_add=True)
     by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
 
+    class Meta:
+        verbose_name = _('Image')
+        verbose_name_plural = _('Images')
+
+    def __str__(self):
+        return str(self.image)
+
 
 class Content(models.Model):
     """
@@ -67,6 +74,7 @@ class WikiCategoryBase(models.Model):
     slug = models.SlugField(_('slug'), max_length=64, unique=True)
     status = StatusField()
     contents = GenericRelation(Content)
+    images = models.ManyToManyField(Image, verbose_name=_('Images'), blank=True)
 
     class Meta:
         abstract = True
@@ -114,9 +122,9 @@ class WikiDungeonBase(WikiCategoryBase):
         color = {
             self.DIFFICULTY_0: 'text-success',
             self.DIFFICULTY_1: 'text-info',
-            self.DIFFICULTY_2: '',
-            self.DIFFICULTY_3: 'text-warning',
-            self.DIFFICULTY_4: 'text-danger',
+            self.DIFFICULTY_2: 'text-warning',
+            self.DIFFICULTY_3: 'text-danger',
+            self.DIFFICULTY_4: '',
         }[self.difficulty]
 
         return (self.difficulty + 1) * '<i class="fas fa-star {0}"></i>'.format(color)
@@ -150,3 +158,17 @@ class Boss(WikiDungeonBase):
 
     def get_absolute_url(self):
         return reverse('wiki:page-detail', args=['boss-ultimes', self.slug])
+
+
+class FeaturedPage(models.Model):
+    """
+    Model to mark a page as featured and ad it to home page.
+    """
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    page = GenericForeignKey('content_type', 'object_id')
+    start_date = models.DateTimeField(_('date de début'))
+
+    class Meta:
+        verbose_name = _('Page mise en avant')
+        verbose_name_plural = _('Pages mise en avant')

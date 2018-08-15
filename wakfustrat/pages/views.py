@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView as DjangoLoginView
@@ -11,7 +13,7 @@ from wakfustrat.common.email import send_email
 from wakfustrat.member.forms import RegisterForm, ResetPasswordRequestForm, ResetPasswordForm
 from wakfustrat.member.models import User, PasswordToken
 from wakfustrat.news.models import get_published_news
-from wakfustrat.wiki.models import Boss, Dungeon, Content
+from wakfustrat.wiki.models import Boss, Dungeon, Content, FeaturedPage
 
 
 class HomeView(TemplateView):
@@ -20,9 +22,25 @@ class HomeView(TemplateView):
     """
     template_name = 'pages/home.html'
 
+    @staticmethod
+    def get_last_page():
+        classes = [Boss, Dungeon]
+        pages = list()
+        for klass in classes:
+            for obj in klass.objects.filter(status='published'):
+                pages.append({
+                    'name': str(obj),
+                    'url': obj.get_absolute_url(),
+                    'date': obj.content.create_date,
+                    'image': obj.image
+                })
+        if len(pages) > 0:
+            return sorted(pages, key=lambda x: x['date'])[-1]
+        return
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['favorite'] = Dungeon.objects.filter(status='published').last()
+        context['favorite'] = FeaturedPage.objects.filter(start_date__lt=datetime.datetime.now()).last()
         context['news_list'] = get_published_news()[:3]
         context['stats'] = {
             'dungeons': Dungeon.objects.exclude(status='empty').count(),
@@ -30,6 +48,7 @@ class HomeView(TemplateView):
             'users': User.objects.filter(is_active=True).count(),
             'editions': Content.objects.count(),
         }
+        context['last_page'] = self.get_last_page()
         return context
 
 

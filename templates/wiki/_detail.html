@@ -9,8 +9,9 @@
 
 
 {% block content %}
-  <h1 class="text-center wiki-name">{% block page_name %}{% endblock %}</h1>
+  {% include 'wiki/include/_wiki_header.html' with header='view' %}
   <hr>
+  <h1 class="text-center wiki-name pb-3">{% block page_name %}{% endblock %}</h1>
   <div class="row">
     <div class="col-lg-9 markdown">
       {% if page.status == 'draft' %}
@@ -32,11 +33,6 @@
             <dt>{% trans 'Vérifié avec la version' %}</dt>
             <dd><i class="fas fa-check text-success"></i> 1.60 - Éclats de Stasis (juin 2018)</dd>
           </dl>
-          <hr>
-          <div class="btn-group d-flex">
-            <a href="{% url 'wiki:history' part page.slug %}" class="btn btn-info w-100 mx-1"><i class="fas fa-history"></i> {% trans 'Historique' %}</a>
-            <a href="{% url 'wiki:page-update' part page.slug %}" class="btn btn-info w-100 mx-1"><i class="fas fa-edit"></i> {% trans 'Modifier' %}</a>
-          </div>
         </div>
       </div>
        <div class="card border-info mb-3 sticky-top">

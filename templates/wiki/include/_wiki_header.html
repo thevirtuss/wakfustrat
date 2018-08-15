@@ -1,0 +1,12 @@
+{% load i18n %}
+
+
+<div class="col-lg-12">
+  <nav class="nav nav-pills flex-column flex-sm-row">
+    <a class="flex-sm-fill text-sm-center nav-link mx-3 {% if header == 'view' %}bg-info text-white{% else %}border{% endif %}" href="{{ page.get_absolute_url }}"><i class="fas fa-book-open"></i> {% trans 'Voir' %}</a>
+    <a class="flex-sm-fill text-sm-center nav-link mx-3 {% if header == 'edit' %}bg-info text-white{% else %}border{% endif %}" href="{% url 'wiki:page-update' part page.slug %}"><i class="fas fa-edit"></i> {% trans 'Modifier' %}</a>
+    <a class="flex-sm-fill text-sm-center nav-link mx-3 {% if header == 'history' %}bg-info text-white{% else %}border{% endif %}" href="{% url 'wiki:history' part page.slug %}"><i class="fas fa-history"></i> {% trans 'Historique' %}</a>
+    <a class="flex-sm-fill text-sm-center nav-link mx-3 {% if header == 'images' %}bg-info text-white{% else %}border{% endif %}" href="{% url 'wiki:images' part page.slug %}"><i class="fas fa-images"></i> {% trans 'Images' %}</a>
+    <a class="flex-sm-fill text-sm-center nav-link mx-3 disabled {% if header == 'chat' %}bg-info text-white{% else %}border{% endif %}" href="#"><i class="fas fa-comments"></i> {% trans 'Discussions' %}</a>
+  </nav>
+</div>

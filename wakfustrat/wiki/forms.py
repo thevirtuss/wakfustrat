@@ -8,10 +8,10 @@ class DungeonForm(forms.ModelForm):
     """
     Form for Dungeon objects.
     """
-    content = forms.CharField(label=_('Contenu'), widget=forms.Textarea, required=False)
+    content = forms.CharField(label=_('Contenu'), widget=forms.HiddenInput, required=False)
 
     class Meta:
-        exclude = ('slug',)
+        exclude = ('slug', 'images')
         model = Dungeon
 
 
@@ -19,8 +19,8 @@ class BossForm(forms.ModelForm):
     """
     Form for Boss objects.
     """
-    content = forms.CharField(label=_('Contenu'), widget=forms.Textarea, required=False)
+    content = forms.CharField(label=_('Contenu'), widget=forms.HiddenInput, required=False)
 
     class Meta:
-        exclude = ('slug',)
+        exclude = ('slug', 'images')
         model = Boss

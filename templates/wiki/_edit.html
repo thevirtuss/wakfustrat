@@ -9,8 +9,9 @@
 {% endblock %}
 
 {% block content %}
+  {% block edit_header %}{% endblock %}
   <h1 class="text-center">{% block edit_title %}{% endblock %}</h1>
-  <form action="." method="post" enctype="multipart/form-data" id="form">
+  <form action="." method="post" enctype="multipart/form-data" id="wiki-edit-form">
     {% include 'misc/_form.html' %}
     <div id="markdownEditor"></div>
     <div class="text-center">
@@ -42,8 +43,8 @@
       }
     }
     return cookieValue;
-}
-var csrftoken = getCookie('csrftoken');
+  }
+  var csrftoken = getCookie('csrftoken');
     var textarea = $('#id_content');
     var editor = new tui.Editor({
       el: document.querySelector('#markdownEditor'),
@@ -69,7 +70,7 @@ var csrftoken = getCookie('csrftoken');
     });
     editor.setMarkdown(textarea.val());
     textarea.addClass('d-none');
-    document.getElementById('form').addEventListener('submit', function() {
+    document.getElementById('wiki-edit-form').addEventListener('submit', function() {
       textarea.val(editor.getValue());
     });
   </script>

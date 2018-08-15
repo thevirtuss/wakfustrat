@@ -9,4 +9,10 @@
 {% block edit_title %}{{ page }}{% endblock %}
 
 
+{% block edit_header %}
+  {% include 'wiki/include/_wiki_header.html' with header='edit' %}
+  <hr>
+{% endblock %}
+
+
 {% block submit_button %}{% trans 'Mettre à jour' %}{% endblock %}

@@ -1,6 +1,7 @@
 {% extends '_base.html' %}
 
-{% load i18n %}
+{% load i18n static %}
+{% load thumbnail %}
 
 
 {% block title %}{% trans 'Accueil' %}{% endblock %}
@@ -17,10 +18,22 @@
       <div class="card border-danger mb-3">
         <div class="card-header bg-danger text-white text-center h4"><i class="fas fa-star"></i> {% trans 'Mis en avant' %}</div>
         <div class="card-body text-primary text-center">
-          <a href="{{ favorite.get_absolute_url }}">
-            <h3>{{ favorite.name }}</h3>
-            <img src="{{ favorite.image.url }}" class="img-fluid w-100">
-          </a>
+          {% if favorite %}
+            <a href="{{ favorite.page.get_absolute_url }}">
+              <h3>{{ favorite.page.name }}</h3>
+              {% if favorite.page.image %}
+                {% thumbnail favorite.page.image "400x300" crop="center" as im %}
+                  <img src="{{ im.url }}">
+                {% endthumbnail %}
+              {% else %}
+                <img src="{% static 'img/ws_default.png' %}" class="img-fluid w-100" alt="{{ favorite.page.name }}">
+              {% endif %}
+            </a>
+          {% else %}
+            <div class="alert alert-warning">
+              {% trans 'Aucun contenu de disponible.' %}
+            </div>
+          {% endif %}
         </div>
       </div>
     </div>
@@ -28,10 +41,22 @@
       <div class="card border-warning mb-3">
         <div class="card-header bg-warning text-white text-center h4"><i class="far fa-clock"></i> {% trans 'Dernier contenu' %}</div>
         <div class="card-body text-primary text-center">
-          <a href="{{ favorite.get_absolute_url }}">
-            <h3>{{ favorite.name }}</h3>
-            <img src="{{ favorite.image.url }}" class="img-fluid w-100">
-          </a>
+          {% if last_page %}
+            <a href="{{ last_page.url }}">
+              <h3>{{ last_page.name }}</h3>
+              {% if last_page.image %}
+                {% thumbnail last_page.image "400x300" crop="center" as im %}
+                  <img src="{{ im.url }}">
+                {% endthumbnail %}
+              {% else %}
+                <img src="{% static 'img/ws_default.png' %}" class="img-fluid w-100" alt="{{ last_page.name }}">
+              {% endif %}
+            </a>
+          {% else %}
+            <div class="alert alert-warning">
+              {% trans 'Aucun contenu de disponible.' %}
+            </div>
+          {% endif %}
         </div>
       </div>
     </div>

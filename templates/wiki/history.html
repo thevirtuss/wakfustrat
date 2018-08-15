@@ -3,12 +3,14 @@
 {% load i18n %}
 
 
-{% block title %}{% trans 'Historique' %} - {{ wiki_obj }}{% endblock %}
+{% block title %}{% trans 'Historique' %} - {{ page }}{% endblock %}
 
 
 {% block content %}
-  <div class="container">
-    <h1 class="text-center">{% trans 'Historique' %} - {{ wiki_obj }}</h1>
+  <div class="container-fluid">
+    {% include 'wiki/include/_wiki_header.html' with header='history' %}
+    <hr>
+    <h1 class="text-center">{% trans 'Historique' %} - {{ page }}</h1>
     <hr>
     <table class="table">
       <thead>
@@ -17,6 +19,7 @@
           <th scope="col">{% trans 'Date' %}</th>
           <th scope="col">{% trans 'Auteur' %}</th>
           <th scope="col">{% trans 'Diff' %}</th>
+          <th scope="col">{% trans 'Message' %}</th>
           <th scope="col">{% trans 'Actions' %}</th>
         </tr>
       </thead>
@@ -34,6 +37,9 @@
               {% else %}
                 0
               {% endif %}
+            </td>
+            <td class="text-center align-middle">
+              <em>Modification {{ version.version }}</em>
             </td>
             <td class="text-center align-middle">TODO</td>
           </tr>
