@@ -34,13 +34,16 @@
               <a class="nav-link" href="{% url 'wiki:page-list' 'boss-ultimes' %}">{% trans 'Boss Ultimes' %}</a>
             </li>
             <li class="nav-item px-2">
+              <a class="nav-link" href="{% url 'wiki:page-list' 'quêtes' %}">{% trans 'Quêtes' %}</a>
+            </li>
+          </ul>
+          <ul class="navbar-nav right mt-1">
+            <li class="nav-item px-2">
               <a class="nav-link" href="{% url 'about' %}">{% trans 'À propos' %}</a>
             </li>
             <li class="nav-item px-2">
               <a class="nav-link" href="{% url 'contact' %}">{% trans 'Contact' %}</a>
             </li>
-          </ul>
-          <ul class="navbar-nav right">
             {% if user.is_authenticated %}
               <li class="nav-item px-2">
                 <a class="nav-link  my-account-link" href="{% url 'my-account' %}">{% trans 'Mon compte' %}</a>

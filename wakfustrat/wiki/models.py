@@ -26,7 +26,6 @@ class Image(models.Model):
     """
     An image attached to an article.
     """
-
     image = models.ImageField(_('image'), upload_to=upload_to_image)
     date = models.DateTimeField(_('date'), auto_now_add=True)
     by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
@@ -158,6 +157,41 @@ class Boss(WikiDungeonBase):
 
     def get_absolute_url(self):
         return reverse('wiki:page-detail', args=['boss-ultimes', self.slug])
+
+
+class QuestCategory(models.Model):
+    """
+    A category for a quest.
+    """
+    name = models.CharField(_('nom'), max_length=64, unique=True)
+    slug = models.SlugField(_('slug'), max_length=64, unique=True)
+    order = models.PositiveSmallIntegerField(_('ordre'))
+
+    class Meta:
+        verbose_name = _('Catégorie de quête')
+        verbose_name_plural = _('Catégories de quêtes')
+
+    def __str__(self):
+        return self.name
+
+
+class Quest(WikiCategoryBase):
+    """
+    A quest on the game.
+    """
+    level = models.PositiveSmallIntegerField(_('niveau'), validators=[MaxValueValidator(200)],
+                                             help_text=_('Niveau minimum pour lancer la quête'))
+    category = models.ForeignKey(QuestCategory, on_delete=models.PROTECT, verbose_name=_('catégorie'))
+
+    class Meta:
+        verbose_name = _('Quête')
+        verbose_name_plural = _('Quêtes')
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('wiki:page-detail', args=['quêtes', self.slug])
 
 
 class FeaturedPage(models.Model):

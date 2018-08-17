@@ -13,7 +13,7 @@ from wakfustrat.common.email import send_email
 from wakfustrat.member.forms import RegisterForm, ResetPasswordRequestForm, ResetPasswordForm
 from wakfustrat.member.models import User, PasswordToken
 from wakfustrat.news.models import get_published_news
-from wakfustrat.wiki.models import Boss, Dungeon, Content, FeaturedPage
+from wakfustrat.wiki.models import Boss, Dungeon, Content, FeaturedPage, Quest
 
 
 class HomeView(TemplateView):
@@ -24,7 +24,7 @@ class HomeView(TemplateView):
 
     @staticmethod
     def get_last_page():
-        classes = [Boss, Dungeon]
+        classes = [Boss, Dungeon, Quest]
         pages = list()
         for klass in classes:
             for obj in klass.objects.filter(status='published'):
@@ -45,6 +45,7 @@ class HomeView(TemplateView):
         context['stats'] = {
             'dungeons': Dungeon.objects.exclude(status='empty').count(),
             'boss': Boss.objects.exclude(status='empty').count(),
+            'quests': Quest.objects.exclude(status='empty').count(),
             'users': User.objects.filter(is_active=True).count(),
             'editions': Content.objects.count(),
         }

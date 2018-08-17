@@ -7,12 +7,13 @@ from django.views.generic import CreateView, DetailView, ListView, UpdateView, V
 
 from wakfustrat.common.md import generate_html
 from wakfustrat.common.models import Zone
-from wakfustrat.wiki.forms import BossForm, DungeonForm
-from wakfustrat.wiki.models import Boss, Content, Dungeon, Image
+from wakfustrat.wiki.forms import BossForm, DungeonForm, QuestForm
+from wakfustrat.wiki.models import Boss, Content, Dungeon, Image, Quest
 
 
 BOSS = 'boss-ultimes'
 DUNGEON = 'donjons'
+QUEST = 'quêtes'
 
 
 class WikiPageMixin(object):
@@ -27,19 +28,23 @@ class WikiPageMixin(object):
             self.part = self.kwargs['part']
             self.klass = {
                 DUNGEON: Dungeon,
-                BOSS: Boss
+                BOSS: Boss,
+                QUEST: Quest
             }[self.part]
             self.form_klass = {
                 DUNGEON: DungeonForm,
-                BOSS: BossForm
+                BOSS: BossForm,
+                QUEST: QuestForm
             }[self.part]
             self.template_part = {
                 DUNGEON: 'dungeon',
                 BOSS: 'boss',
+                QUEST: 'quest'
             }[self.part]
             part_name = {
                 DUNGEON: 'Donjons',
                 BOSS: 'Boss Ultimes',
+                QUEST: 'Quêtes'
             }[self.part]
             self.extra_context = {
                 'part': self.part,

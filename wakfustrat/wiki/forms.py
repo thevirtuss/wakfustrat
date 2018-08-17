@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
-from wakfustrat.wiki.models import Boss, Dungeon
+from wakfustrat.wiki.models import Boss, Dungeon, Quest
 
 
 class DungeonForm(forms.ModelForm):
@@ -24,3 +24,14 @@ class BossForm(forms.ModelForm):
     class Meta:
         exclude = ('slug', 'images')
         model = Boss
+
+
+class QuestForm(forms.ModelForm):
+    """
+    Form for Quest objects.
+    """
+    content = forms.CharField(label=_('Contenu'), widget=forms.HiddenInput, required=False)
+
+    class Meta:
+        exclude = ('slug', 'images')
+        model = Quest

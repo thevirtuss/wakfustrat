@@ -1,0 +1,38 @@
+{% extends '_base.html' %}
+
+{% load i18n %}
+
+
+{% block title %}{% trans 'Quêtes' %}{% endblock %}
+
+
+{% block content %}
+  <div class="container">
+    <h1 class="text-center text-info">{% trans 'Quêtes' %}</h1>
+    <hr>
+    {% if quest_list %}
+      {% regroup quest_list by category as categories %}
+      {% for category in categories %}
+        <h2 id="{{ category.grouper.slug }}">{{ category.grouper }}</h2>
+        <ul>
+          {% for quest in quest_list|dictsort:'level' %}
+            <li>
+              <a href="{{ quest.get_absolute_url }}">{{ quest.level }} - {{ quest }}</a>
+                {% if quest.status == 'draft' %}
+                  <span class="badge badge-danger px-2 py-1 ml-1">{% trans 'brouillon' %}</span>
+                {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      {% endfor %}
+    {% else %}
+      <div class="alert alert-warning">
+        {% trans "Aucune quête n'est disponible pour le moment." %}
+      </div>
+    {% endif %}
+    <hr>
+    <div class="text-center">
+      <a href="{% url 'wiki:page-create' 'quêtes' %}" class="btn btn-success">{% trans 'Nouvelle quête' %}</a>
+    </div>
+  </div>
+{% endblock %}

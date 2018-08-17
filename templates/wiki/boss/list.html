@@ -4,7 +4,7 @@
 {% load thumbnail %}
 
 
-{% block title %}{% trans 'Liste des boss ultimes' %}{% endblock %}
+{% block title %}{% trans 'Boss ultimes' %}{% endblock %}
 
 
 {% block content %}
@@ -12,7 +12,7 @@
     {% if boss_list %}
       <div class="row">
         {% for boss in boss_list %}
-          <div class="col-lg-3 p-0 my-1">
+          <div class="col-lg-3 col-md-6 col-sm-12 p-0 my-1">
             <div class="card m-1 h-100">
               <a href="{{ boss.get_absolute_url }}">
                 {% if boss.image %}
@@ -25,7 +25,7 @@
                 <div class="card-body text-center">
                   <h5 class="card-title">Niv. {{ boss.level }} - {{ boss.boss }}</h5>
                   {% if boss.status == 'draft' %}
-                    <span class="badge badge-warning">{% trans 'brouillon' %}</span>
+                    <span class="badge badge-danger">{% trans 'brouillon' %}</span>
                   {% else %}
                     <span class="badge badge-success">{% trans 'vérifié 1.60' %}</span>
                   {% endif %}

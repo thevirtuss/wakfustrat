@@ -4,7 +4,7 @@
 {% load thumbnail %}
 
 
-{% block title %}{% trans 'Liste des donjons' %}{% endblock %}
+{% block title %}{% trans 'Donjons' %}{% endblock %}
 
 
 {% block content %}
@@ -57,7 +57,7 @@
                 <td class="text-center align-middle">{{ dungeon.get_difficulty_icons|safe }}</td>
                 <td class="text-center align-middle">
                   {% if dungeon.status == 'draft' %}
-                    <span class="badge badge-warning">{% trans 'brouillon' %}</span>
+                    <span class="badge badge-danger">{% trans 'brouillon' %}</span>
                   {% else %}
                     <span class="badge badge-success">{% trans 'vérifié 1.60' %}</span>
                   {% endif %}

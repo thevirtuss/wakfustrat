@@ -23,7 +23,7 @@
               <h3>{{ favorite.page.name }}</h3>
               {% if favorite.page.image %}
                 {% thumbnail favorite.page.image "400x300" crop="center" as im %}
-                  <img src="{{ im.url }}">
+                  <img src="{{ im.url }}" class="img-fluid w-100" alt="{{ favorite.page.name }}">
                 {% endthumbnail %}
               {% else %}
                 <img src="{% static 'img/ws_default.png' %}" class="img-fluid w-100" alt="{{ favorite.page.name }}">
@@ -46,7 +46,7 @@
               <h3>{{ last_page.name }}</h3>
               {% if last_page.image %}
                 {% thumbnail last_page.image "400x300" crop="center" as im %}
-                  <img src="{{ im.url }}">
+                  <img src="{{ im.url }}" class="img-fluid w-100" alt="{{ last_page.name }}">
                 {% endthumbnail %}
               {% else %}
                 <img src="{% static 'img/ws_default.png' %}" class="img-fluid w-100" alt="{{ last_page.name }}">
@@ -91,6 +91,7 @@
           <ul class="list-unstyled">
             <li>{% trans 'Donjons' %} : {{ stats.dungeons }}</li>
             <li>{% trans 'Boss Ultimes' %} : {{ stats.boss }}</li>
+            <li>{% trans 'Quêtes' %} : {{ stats.quests }}</li>
           </ul>
           <h3>{% trans 'Communauté' %}</h3>
           <ul class="list-unstyled">

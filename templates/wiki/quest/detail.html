@@ -1,0 +1,19 @@
+{% extends 'wiki/_detail.html' %}
+
+{% load i18n %}
+
+
+{% block title %}{{ page.name }} - {{ page.category }} - {{ part_name }}{% endblock %}
+
+
+{% block page_name %}{{ page.name }}{% endblock %}
+
+
+{% block info_box %}
+  <dt>{% trans 'Nom' %}</dt>
+  <dd>{{ page.name }}</dd>
+  <dt>{% trans 'Niveau requis' %}</dt>
+  <dd>{{ page.level }}</dd>
+  <dt>{% trans 'Catégorie' %}</dt>
+  <dd>{{ page.category }}</dd>
+{% endblock %}
