@@ -20,7 +20,16 @@ class User(AbstractUser):
         ('EFR', 'Efrim'),
         ('PHA', 'Phaeris'),
     )
-
+    username = models.CharField(
+        _('pseudo'),
+        max_length=32,
+        unique=True,
+        help_text=_('Obligatoire. 32 caractères max. Lettres, chiffres et @/./+/-/_ seulement.'),
+        validators=[AbstractUser.username_validator],
+        error_messages={
+            'unique': _("A user with that username already exists."),
+        },
+    )
     register_token = models.UUIDField(_("jeton d'inscription"), default=uuid.uuid4, editable=False, unique=True)
     server = models.CharField(_('serveur'), max_length=20, choices=SERVER_CHOICES, blank=True, null=True)
 

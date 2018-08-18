@@ -29,10 +29,12 @@ class RegisterForm(SetPasswordBaseForm):
     """
     Form used for registration.
     """
+    username = forms.CharField(label=_('Pseudo'), min_length=3, max_length=30)
+    email = forms.EmailField(label=_('Adresse mail'),
+                             help_text=_("Votre adresse mail ne sera partagée publiquement sur le site. "
+                                         "Elle ne sera utilisée que pour communiquer avec vous."))
     password = forms.CharField(label=_('Mot de passe'), widget=forms.PasswordInput)
     password2 = forms.CharField(label=_('Mot de passe (confirmation)'), widget=forms.PasswordInput)
-    username = forms.CharField(label=_("Nom d'utilisateur"), min_length=3, max_length=30)
-    email = forms.EmailField(label=_('Adresse mail'))
 
     def clean_username(self):
         data = self.cleaned_data['username']
