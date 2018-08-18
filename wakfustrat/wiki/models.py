@@ -73,6 +73,7 @@ class WikiCategoryBase(models.Model):
     slug = models.SlugField(_('slug'), max_length=64, unique=True)
     status = StatusField()
     contents = GenericRelation(Content)
+    image = models.ImageField(_('image'), blank=True, null=True, upload_to=upload_to_wiki_page_image)
     images = models.ManyToManyField(Image, verbose_name=_('Images'), blank=True)
 
     class Meta:
@@ -112,7 +113,6 @@ class WikiDungeonBase(WikiCategoryBase):
         help_text=_("Il s'agit d'une indication subjective à propos de la complexité de la stratégie du donjon"))
     zone = models.ForeignKey(Zone, verbose_name=_('zone'), on_delete=models.PROTECT)
     subzone = models.ForeignKey(SubZone, verbose_name=_('sous-zone'), on_delete=models.PROTECT, blank=True, null=True)
-    image = models.ImageField(_('image'), blank=True, null=True, upload_to=upload_to_wiki_page_image)
 
     class Meta:
         abstract = True
